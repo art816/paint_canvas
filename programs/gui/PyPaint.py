@@ -1,4 +1,8 @@
 from tkinter import *
+import io
+import os
+from PIL import Image
+import numpy as np
 
 
 class Paint(Frame):
@@ -23,6 +27,16 @@ class Paint(Frame):
                               event.x + self.brush_size,
                               event.y + self.brush_size,
                               fill=self.color, outline=self.color)
+
+    def save(self):
+        ps = self.canv.postscript(colormode='mono')
+        img = Image.open(io.BytesIO(ps.encode('utf-8')))
+        img = np.asarray(img.getdata())
+        print(img)
+        #plt.imshow(img.)
+        #plt.show()
+                #(os.path.join(
+            #os.path.dirname(os.path.abspath(__file__)), 'test.jpg'))
 
     def setUI(self):
 
@@ -89,16 +103,17 @@ class Paint(Frame):
                          command=lambda: self.set_brush_size(20))
         ten_btn.grid(row=1, column=5)
 
-        twenty_btn = Button(self, text="Fifty", width=10,
-                            command=lambda: self.set_brush_size(50))
+        twenty_btn = Button(self, text="END", width=10,
+                            command=lambda: self.save())
         twenty_btn.grid(row=1, column=6, sticky=W)
 
 
 def main():
     root = Tk()
-    root.geometry("850x500+300+300")
+    root.geometry("300x300+300+300")
     app = Paint(root)
     root.mainloop()
+    app.pri
 
 
 if __name__ == '__main__':
